@@ -1,13 +1,11 @@
-# JobAgent AI 🤖
+# Atelier AI 🎨🤖
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![Render](https://img.shields.io/badge/Render-Deploy%20Ready-46E3B7.svg?style=flat&logo=render&logoColor=white)](https://render.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **JobAgent AI** is an autonomous, human-like multi-agent system designed to search, score, tailor, apply to, and track **Data Science, Machine Learning, and AI Engineering** internships and entry-level positions across **LinkedIn, Internshala, Naukri, Indeed, and Wellfound (AngelList)**.
-
-Built with a conversational career coach persona (**Alex**), bidirectional audio/voice interaction, a periodic background scanner, ATS scoring, tailored application drafting, and full correspondence tracking.
+> **Atelier AI** is an executive autonomous multi-agent career platform designed to search, score, tailor, apply to, and track **Data Science, Machine Learning, and AI Engineering** internships and entry-level positions across **LinkedIn, Internshala, Naukri, Indeed, and Wellfound (AngelList)**. Built with an editorial luxury UI inspired by Figma, two-way conversational guidance (**Alex**), a 10-minute automated background scout, ATS scoring, tailored cover letters, and live recruiter revert tracking.
 
 ---
 

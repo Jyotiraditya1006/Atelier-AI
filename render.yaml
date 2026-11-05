@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: jobagent-ai
+    name: atelier-ai
     runtime: python
     region: oregon
     plan: free
