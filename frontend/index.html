@@ -3,42 +3,531 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JobAgent AI — Your AI-Powered Job Application System</title>
-  <meta name="description" content="Multi-agent AI system to find, apply and track your Data Science / ML job applications automatically.">
-
-  <!-- Preconnect for fonts -->
+  <title>JobAgent AI — Executive Autonomous Career Assistant</title>
+  <meta name="description" content="Autonomous multi-agent system scouting Data Science & ML internships, drafting tailored cover letters, and tracking recruiter reverts.">
+  
+  <!-- Fonts: Playfair Display + Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Favicon (inline SVG via data URI) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237c3aed'/%3E%3Ctext y='.9em' font-size='75' x='12'>🤖%3C/text%3E%3C/svg%3E">
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/styles.css">
-
-  <style>
-    /* Critical: prevent flash of unstyled content */
-    #app { visibility: hidden; }
-    #app.ready { visibility: visible; }
-  </style>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231b382b'><circle cx='12' cy='12' r='10'/><path d='M12 6v6l4 2' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/></svg>">
 </head>
 <body>
 
-<!-- JS will build the entire DOM, then mark #app ready -->
-<div id="app"></div>
+  <!-- Top Status & Announcement Bar -->
+  <aside class="announcement-bar" role="region" aria-label="Autonomous Scout Status">
+    <div class="announcement-center">
+      <span class="pulse-dot"></span>
+      <span>Autonomous Job & Internship Scout is Active — Scanning LinkedIn, Internshala, Naukri & Wellfound every 10 mins</span>
+    </div>
+    <div class="announcement-right">
+      <span>Candidate: <strong>Jyotiraditya Patil</strong></span>
+      <span>•</span>
+      <a href="https://github.com/Jyotiraditya1006" target="_blank" style="text-decoration: underline;">GitHub</a>
+      <span>•</span>
+      <a href="https://www.linkedin.com/in/jyotiraditya-patil-73b394274/" target="_blank" style="text-decoration: underline;">LinkedIn</a>
+    </div>
+  </aside>
 
-<!-- Toast container placeholder (JS will insert it outside #app) -->
-<div id="toast-container"></div>
+  <!-- Sticky Executive Header -->
+  <header class="site-header" id="main-header">
+    <div class="container header-inner">
+      <div class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary);">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        <span>JOBAGENT<span style="color:var(--accent);">.AI</span></span>
+        <span class="brand-badge">Atelier Pro</span>
+      </div>
 
-<script src="js/app.js"></script>
-<script>
-  // Mark app ready after DOM build (called by app.js indirectly via DOMContentLoaded)
-  document.addEventListener('DOMContentLoaded', () => {
-    requestAnimationFrame(() => {
-      const app = document.getElementById('app');
-      if (app) app.classList.add('ready');
-    });
-  });
-</script>
+      <!-- Navigation Tabs -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-tabs">
+          <li>
+            <button class="nav-tab-btn active" data-tab="jobs" onclick="switchTab('jobs')">
+              <span>🔍 Job Matches</span>
+              <span class="tab-badge" id="header-jobs-count">235</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="applications" onclick="switchTab('applications')">
+              <span>📋 Applications & Reverts</span>
+              <span class="tab-badge" id="header-apps-count">4</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="chat" onclick="switchTab('chat')">
+              <span>💬 Agent Chat</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="resume" onclick="switchTab('resume')">
+              <span>📄 Resume & Projects</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="settings" onclick="switchTab('settings')">
+              <span>⚙️ Settings</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Action Area -->
+      <div class="header-actions">
+        <div class="scout-status-pill">
+          <span class="pulse-dot"></span>
+          <span>10-Min Scout Active</span>
+        </div>
+        <button class="btn-scrape-now" onclick="triggerManualScrape()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>Scout Fresh Roles</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Executive Candidate Profile Banner -->
+  <section class="agent-hero">
+    <div class="container">
+      <div class="hero-profile-card">
+        <div class="user-profile-meta">
+          <div class="user-avatar-wrap">JP</div>
+          <div class="user-text-info">
+            <span class="subheading">Active Candidate Profile</span>
+            <h2 class="serif">Jyotiraditya Patil</h2>
+            <p>B.Tech Computer Science & Engineering (AI & ML) • Pune / Mumbai (Open to Remote)</p>
+            <div class="user-badges">
+              <span class="meta-badge">🎯 Data Science & ML Internships</span>
+              <span class="meta-badge">💻 Python • PyTorch • Scikit-learn</span>
+              <span class="meta-badge">⭐ ATS Score: 92%</span>
+              <span class="meta-badge">
+                <a href="https://github.com/Jyotiraditya1006" target="_blank">🔗 GitHub: Jyotiraditya1006</a>
+              </span>
+              <span class="meta-badge">
+                <a href="https://www.linkedin.com/in/jyotiraditya-patil-73b394274/" target="_blank">💼 LinkedIn Profile</a>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-strip">
+          <div class="metric-box">
+            <div class="metric-label">Roles Scouted</div>
+            <div class="metric-value" id="stat-total-jobs">235</div>
+            <div class="metric-sub">Across 5 Platforms</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Applications Sent</div>
+            <div class="metric-value" id="stat-applied-count">12</div>
+            <div class="metric-sub">+3 this week</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Revert & Interviews</div>
+            <div class="metric-value" id="stat-reverts-count">4</div>
+            <div class="metric-sub">33% response rate</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Avg Match Score</div>
+            <div class="metric-value" id="stat-avg-score">84.5%</div>
+            <div class="metric-sub">High Compatibility</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Panes -->
+  <main class="container">
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         TAB 1: JOBS & INTERNSHIPS DASHBOARD
+    ────────────────────────────────────────────────────────────────────── -->
+    <section class="tab-pane active" id="pane-jobs">
+      <div class="filter-bar">
+        <div class="platform-pills" role="tablist">
+          <button class="pill-btn active" data-filter="all" onclick="filterJobs('all', this)">All Opportunities</button>
+          <button class="pill-btn" data-filter="internship" onclick="filterJobs('internship', this)">🎓 Internships Only</button>
+          <button class="pill-btn" data-filter="full-time" onclick="filterJobs('full-time', this)">💼 Full-Time Entry</button>
+          <button class="pill-btn" data-filter="linkedin" onclick="filterJobs('linkedin', this)">LinkedIn</button>
+          <button class="pill-btn" data-filter="internshala" onclick="filterJobs('internshala', this)">Internshala</button>
+          <button class="pill-btn" data-filter="naukri" onclick="filterJobs('naukri', this)">Naukri</button>
+          <button class="pill-btn" data-filter="indeed" onclick="filterJobs('indeed', this)">Indeed</button>
+          <button class="pill-btn" data-filter="wellfound" onclick="filterJobs('wellfound', this)">Wellfound</button>
+        </div>
+
+        <div class="catalog-actions-bar">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="jobs-search-input" placeholder="Search role, company or skill…" oninput="handleJobSearch(event)">
+          </div>
+
+          <select class="sort-select" id="jobs-sort-select" onchange="handleJobSort(event)" aria-label="Sort Jobs">
+            <option value="score">Sort by: Highest Match Score</option>
+            <option value="recent">Sort by: Recently Posted</option>
+            <option value="company">Sort by: Company A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Job Cards Container -->
+      <div class="jobs-grid" id="jobs-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         TAB 2: APPLICATIONS & REVERT MAILS KANBAN
+    ────────────────────────────────────────────────────────────────────── -->
+    <section class="tab-pane" id="pane-applications">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <div>
+          <span class="subheading">Application Lifecycle</span>
+          <h2 class="serif" style="color:var(--primary); font-size:1.8rem;">Applied Roles & Recruiter Reverts</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Real-time tracking of auto-applied jobs, tailored cover letters, and company revert messages.
+          </p>
+        </div>
+        <button class="btn-scrape-now" onclick="refreshApplications()">
+          <span>🔄 Sync Tracker Status</span>
+        </button>
+      </div>
+
+      <div class="kanban-board">
+        <!-- Column 1: Applied -->
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <h3><span>🔵</span> Applied / Dispatched</h3>
+            <span class="kanban-counter" id="count-applied">0</span>
+          </div>
+          <div class="kanban-cards-stack" id="stack-applied">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Column 2: In Review -->
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <h3><span>🟡</span> In Review</h3>
+            <span class="kanban-counter" id="count-review">0</span>
+          </div>
+          <div class="kanban-cards-stack" id="stack-review">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Column 3: Revert / Confirmation Received -->
+        <div class="kanban-col" style="background:#f9fbf9; border-color:rgba(46, 125, 50, 0.2);">
+          <div class="kanban-header">
+            <h3 style="color:var(--status-green);"><span>📨</span> Revert Mails Received</h3>
+            <span class="kanban-counter" id="count-reverts" style="background:var(--status-green-bg); color:var(--status-green);">0</span>
+          </div>
+          <div class="kanban-cards-stack" id="stack-reverts">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Column 4: Interview Scheduled -->
+        <div class="kanban-col" style="background:#fffaf0; border-color:rgba(180, 83, 9, 0.2);">
+          <div class="kanban-header">
+            <h3 style="color:var(--status-amber);"><span>🎉</span> Interview Scheduled</h3>
+            <span class="kanban-counter" id="count-interview" style="background:var(--status-amber-bg); color:var(--status-amber);">0</span>
+          </div>
+          <div class="kanban-cards-stack" id="stack-interview">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         TAB 3: CONVERSATIONAL AGENT CHAT
+    ────────────────────────────────────────────────────────────────────── -->
+    <section class="tab-pane" id="pane-chat">
+      <div class="chat-container-card">
+        <div class="chat-card-header">
+          <div class="chat-agent-profile">
+            <div class="agent-avatar">🤖</div>
+            <div>
+              <h3>Alex — AI Career Strategist & Orchestrator</h3>
+              <p>Connected via Google Gemini AI • Auto-executes searches and letter drafts</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="pill-btn" onclick="sendChatPrompt('Find new Machine Learning internships in Bangalore')">🔍 Find ML Internships</button>
+            <button class="pill-btn" onclick="sendChatPrompt('Draft a tailored cover letter for Google ML role')">✍️ Cover Letter for Google</button>
+          </div>
+        </div>
+
+        <div class="chat-messages-area" id="chat-messages">
+          <div class="chat-bubble assistant">
+            <span class="agent-tag">🧠 Orchestrator Agent</span>
+            <p>
+              Hello Jyotiraditya! I'm Alex, your dedicated career agent. I've already loaded your candidate profile (B.Tech CSE in AI & ML) and indexed 230+ Data Science & ML opportunities.
+            </p>
+            <p style="margin-top:8px;">
+              Our background scout is currently running every 10 minutes. Tell me what you'd like to do, or click any prompt to trigger cover letters, tailored resumes, or custom role searches!
+            </p>
+          </div>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="chat-user-input" placeholder="Type a message or instruction for your agent… (e.g. 'Apply to Microsoft with tailored resume')" onkeydown="if(event.key === 'Enter') handleChatSubmit()">
+          <button class="btn-send-chat" onclick="handleChatSubmit()" title="Send Message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         TAB 4: RESUME & ATS PORTFOLIO
+    ────────────────────────────────────────────────────────────────────── -->
+    <section class="tab-pane" id="pane-resume">
+      <div class="resume-grid">
+        <!-- Left: Featured Projects & Portfolio -->
+        <div>
+          <div class="portfolio-card">
+            <span class="subheading">Verified Technical Portfolio</span>
+            <h3 class="serif" style="font-size:1.5rem; color:var(--primary); margin-bottom:14px;">Jyotiraditya Patil's Top Projects</h3>
+            
+            <div class="project-item">
+              <div class="project-header">
+                <span class="project-title">VehicleIQ — AI Computer Vision Telematics</span>
+                <span class="meta-badge">Python • YOLOv8 • OpenCV</span>
+              </div>
+              <p class="project-desc">
+                High-accuracy deep learning pipeline for real-time vehicular telematics, lane departure detection, and obstacle classification deployed with optimized ONNX runtime.
+              </p>
+            </div>
+
+            <div class="project-item">
+              <div class="project-header">
+                <span class="project-title">RecruitIQ — Intelligent Applicant ATS Parser</span>
+                <span class="meta-badge">NLP • TF-IDF • FastEmbed • Python</span>
+              </div>
+              <p class="project-desc">
+                Automated resume parsing engine extracting hard skills, experience scores, and cosine semantic similarity matching against technical job specifications.
+              </p>
+            </div>
+
+            <div class="project-item">
+              <div class="project-header">
+                <span class="project-title">LSTM Stock & Time-Series Predictor</span>
+                <span class="meta-badge">PyTorch • LSTM • Pandas • NumPy</span>
+              </div>
+              <p class="project-desc">
+                Recurrent neural network model analyzing rolling financial time-series indicators to forecast short-term market momentum with low mean absolute error (MAE).
+              </p>
+            </div>
+
+            <div class="project-item">
+              <div class="project-header">
+                <span class="project-title">Customer Churn Analytics & Prediction</span>
+                <span class="meta-badge">XGBoost • Scikit-learn • SHAP</span>
+              </div>
+              <p class="project-desc">
+                Enterprise churn prediction model using feature attribution (SHAP values) and calibrated tree ensembles achieving 89% ROC-AUC on real-world customer telemetry.
+              </p>
+            </div>
+
+            <div class="project-item">
+              <div class="project-header">
+                <span class="project-title">Weather Prediction using Hidden Markov Models (HMM)</span>
+                <span class="meta-badge">Statistical ML • Baum-Welch • Python</span>
+              </div>
+              <p class="project-desc">
+                Probabilistic weather regime classification using Discrete HMMs with Viterbi decoding for state sequence estimation.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Resume Upload & ATS Matcher -->
+        <div>
+          <div class="portfolio-card">
+            <span class="subheading">Resume Synchronization</span>
+            <h3 class="serif" style="font-size:1.3rem; color:var(--primary); margin-bottom:8px;">Upload New Resume</h3>
+            <p style="color:var(--text-muted); font-size:0.86rem; margin-bottom:18px;">
+              Our parser automatically extracts technical skills, projects, and generates customized tailored PDFs.
+            </p>
+
+            <div style="border:2px dashed var(--border-light); border-radius:var(--radius-md); padding:32px 20px; text-align:center; background:var(--bg-page); cursor:pointer;" onclick="document.getElementById('resume-file-input').click()">
+              <input type="file" id="resume-file-input" style="display:none;" accept=".pdf,.docx" onchange="handleResumeUpload(event)">
+              <div style="font-size:2.5rem; margin-bottom:8px;">📄</div>
+              <strong style="color:var(--primary); font-size:0.95rem; display:block;">Click to upload PDF or DOCX</strong>
+              <span style="font-size:0.78rem; color:var(--text-light);">Max file size: 10 MB</span>
+            </div>
+
+            <div style="margin-top:24px;">
+              <span class="subheading">Targeted Competencies</span>
+              <div class="job-tags-row" style="margin-top:8px;">
+                <span class="skill-tag">Python (Expert)</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">Deep Learning</span>
+                <span class="skill-tag">PyTorch</span>
+                <span class="skill-tag">TensorFlow</span>
+                <span class="skill-tag">Scikit-learn</span>
+                <span class="skill-tag">SQL & Data Warehousing</span>
+                <span class="skill-tag">FastAPI</span>
+                <span class="skill-tag">Computer Vision</span>
+                <span class="skill-tag">Natural Language Processing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         TAB 5: SETTINGS & SCOUT CONFIG
+    ────────────────────────────────────────────────────────────────────── -->
+    <section class="tab-pane" id="pane-settings">
+      <div class="settings-card">
+        <span class="subheading">Agent Configuration</span>
+        <h2 class="serif" style="color:var(--primary); font-size:1.8rem; margin-bottom:6px;">Autonomous Scout Preferences</h2>
+        <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:28px;">
+          Configure candidate contact info, target platforms, and autonomous application preferences.
+        </p>
+
+        <form onsubmit="handleSettingsSave(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="set-name">Full Name</label>
+              <input type="text" id="set-name" class="form-control" value="Jyotiraditya Patil" required>
+            </div>
+            <div class="form-group">
+              <label for="set-email">Email Address</label>
+              <input type="email" id="set-email" class="form-control" value="jyotiradityapatil01@gmail.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="set-phone">Phone Number</label>
+              <input type="text" id="set-phone" class="form-control" value="+91 7020676261" required>
+            </div>
+            <div class="form-group">
+              <label for="set-location">Location Preference</label>
+              <input type="text" id="set-location" class="form-control" value="Pune / Mumbai / Remote / Pan-India">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="set-github">GitHub Profile URL</label>
+              <input type="url" id="set-github" class="form-control" value="https://github.com/Jyotiraditya1006">
+            </div>
+            <div class="form-group">
+              <label for="set-linkedin">LinkedIn Profile URL</label>
+              <input type="url" id="set-linkedin" class="form-control" value="https://www.linkedin.com/in/jyotiraditya-patil-73b394274/">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Autonomous Features</label>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+              <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--primary); cursor:pointer;">
+                <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--primary);">
+                <strong>Run autonomous scout every 10 minutes in background</strong>
+              </label>
+              <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--primary); cursor:pointer;">
+                <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--primary);">
+                <strong>Generate bespoke tailored cover letters with project highlights</strong>
+              </label>
+              <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--primary); cursor:pointer;">
+                <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--primary);">
+                <strong>Track recruiter delivery confirmations and revert emails</strong>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-scrape-now" style="padding:14px 28px; margin-top:12px;">
+            <span>Save Profile & Preferences</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── MODAL: Job Inspection & Details ──────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-job-details" onclick="if(event.target === this) closeModal('modal-job-details')">
+    <div class="modal-card">
+      <button class="btn-close-modal" onclick="closeModal('modal-job-details')" aria-label="Close">✕</button>
+      <div id="modal-job-content">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Cover Letter & Cold Email Preview ─────────────────────────── -->
+  <div class="modal-overlay" id="modal-letter" onclick="if(event.target === this) closeModal('modal-letter')">
+    <div class="modal-card">
+      <button class="btn-close-modal" onclick="closeModal('modal-letter')" aria-label="Close">✕</button>
+      <span class="subheading">Tailored Application Document</span>
+      <h3 class="serif" style="font-size:1.6rem; color:var(--primary); margin-bottom:14px;" id="modal-letter-title">Cover Letter</h3>
+      <div style="background:var(--bg-page); padding:24px; border-radius:var(--radius-sm); border:1px solid var(--border-light); white-space:pre-wrap; font-size:0.92rem; line-height:1.7; color:var(--text-main);" id="modal-letter-body">
+      </div>
+      <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:12px;">
+        <button class="pill-btn" onclick="navigator.clipboard.writeText(document.getElementById('modal-letter-body').textContent); showToast('Copied to clipboard!')">Copy Document</button>
+        <button class="btn-scrape-now" onclick="closeModal('modal-letter')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Recruiter Revert & Confirmation Email ─────────────────────── -->
+  <div class="modal-overlay" id="modal-revert" onclick="if(event.target === this) closeModal('modal-revert')">
+    <div class="modal-card" style="max-width:680px;">
+      <button class="btn-close-modal" onclick="closeModal('modal-revert')" aria-label="Close">✕</button>
+      
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--status-green-bg); color:var(--status-green); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+          ✉️
+        </div>
+        <div>
+          <span class="subheading" style="color:var(--status-green);">Delivered & Acknowledged</span>
+          <h3 class="serif" style="font-size:1.4rem; color:var(--primary);" id="revert-modal-subject">Application Receipt Confirmation</h3>
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:20px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border-light);">
+          <div>From: <strong id="revert-modal-from">careers@company.com</strong></div>
+          <div id="revert-modal-date">Today at 11:42 AM</div>
+        </div>
+        <div style="font-size:0.9rem; line-height:1.7; color:var(--text-main); white-space:pre-wrap;" id="revert-modal-body">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.8rem; color:var(--status-green); font-weight:600;">✓ Delivery verified by JobAgent Dispatcher</span>
+        <button class="btn-scrape-now" onclick="closeModal('modal-revert')">Back to Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Engine Script -->
+  <script src="js/app.js"></script>
 </body>
 </html>
