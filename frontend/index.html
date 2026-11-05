@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobAgent AI — Your AI-Powered Job Application System</title>
+  <meta name="description" content="Multi-agent AI system to find, apply and track your Data Science / ML job applications automatically.">
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Favicon (inline SVG via data URI) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237c3aed'/%3E%3Ctext y='.9em' font-size='75' x='12'>🤖%3C/text%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    /* Critical: prevent flash of unstyled content */
+    #app { visibility: hidden; }
+    #app.ready { visibility: visible; }
+  </style>
+</head>
+<body>
+
+<!-- JS will build the entire DOM, then mark #app ready -->
+<div id="app"></div>
+
+<!-- Toast container placeholder (JS will insert it outside #app) -->
+<div id="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+  // Mark app ready after DOM build (called by app.js indirectly via DOMContentLoaded)
+  document.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(() => {
+      const app = document.getElementById('app');
+      if (app) app.classList.add('ready');
+    });
+  });
+</script>
+</body>
+</html>
